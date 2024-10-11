@@ -1,5 +1,5 @@
 # curious-cat-clementi
-Repo for NUS GDG Project Dev 24 "Curious Cat in Clementi"
+Repo for NUS GDG Project Dev 24 "Curious Cat in Clementi".
 
 A light-hearted, cozy game inspired by "Untitled Goose Game," featuring a mischievous street cat exploring the neighborhood of Clementi. As the cat, players complete simple quests, perform pranks, and interact with NPCs in a minimalist, hand-drawn style.
 
