@@ -30,7 +30,5 @@ public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBe
         {
             Debug.Log(typeof(T) + " Instance already assigned to " + Instance.name + ", deleting component instance in " + gameObject.name);
         }
-
-        Debug.Log("Initialised Singleton Instance");
     }
 }
