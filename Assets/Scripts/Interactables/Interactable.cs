@@ -2,7 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
-    public abstract void Interact();
+    [SerializeField]
+    private GameObject interactCanvas;
+
+    void Start()
+    {
+        interactCanvas.SetActive(false);   
+    }
+    public virtual void Interact()
+    {
+
+    }
+
+    public void OnInteractable() 
+    {
+        interactCanvas.SetActive(true);
+    }
+    public void OnUninteractable()
+    {
+        interactCanvas.SetActive(false);
+    }
 }
