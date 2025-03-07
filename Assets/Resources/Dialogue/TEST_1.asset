@@ -19,3 +19,10 @@ MonoBehaviour:
     sentence: ohayooo
   - speaker: 0
     sentence: sayonara
+  - speaker: 1
+    sentence: welcome to nus comsci
+  choices:
+  - label: sleep and be jobless
+    nextDialogueSequence: {fileID: 11400000, guid: 372b7ad7d4c8eb9439586f46572cc03a, type: 2}
+  - label: dont sleep
+    nextDialogueSequence: {fileID: 11400000, guid: a1d46f99132954d43b113282e6499a00, type: 2}

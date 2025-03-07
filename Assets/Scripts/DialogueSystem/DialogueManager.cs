@@ -12,14 +12,20 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     [Header("Settings")]
     [SerializeField]
     private float textDelay = 0.05f;
-    [Header("UI")]
+    [Header("Dialogue UI")]
     [SerializeField]
     private GameObject dialoguePanel;
     [SerializeField]
     private TextMeshProUGUI speakerNameUI;
     [SerializeField]
     private TextMeshProUGUI dialogueTextUI;
-
+    [Header("Dialogue Choices UI")]
+    [SerializeField]
+    private GameObject choicesPanel;
+    [SerializeField]
+    private GameObject choiceUIPrefab;
+    [SerializeField]
+    private Transform choiceUIRect;
 
     private SpeakerDataHandler speakerDataHandler = new SpeakerDataHandler();
 
@@ -27,7 +33,9 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
     private bool currentlyInDialogue = false;
     private bool currentlyTyping = false;
+    private bool currentlyWaitingChoice = false;
     private Dialogue currentDialogue;
+    private DialogueSequenceScriptableObject currentDialogueSequence;
 
 
     private const string DIALOGUE_SO_DIRECTORY = "Dialogue/";
@@ -53,20 +61,19 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     private void OnDialogueInput() 
     {
-        if (!currentlyInDialogue)
+        if (currentlyWaitingChoice || !currentlyInDialogue)
             return;
        
         if (currentlyTyping)
         {
-            // skips typewriting animation
-            StopAllCoroutines();
+            StopAllCoroutines(); // skips typewriting animation
             dialogueTextUI.text = currentDialogue.sentence;
             currentlyTyping = false;
+            return;
         }
-        else
-        {
-            DisplayNextSentence();
-        }
+     
+        DisplayNextSentence();
+        
     }
 
     /// <summary>
@@ -80,18 +87,20 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
             Debug.LogErrorFormat("DialogueManager: DialogueSequenceScriptableObject could not be found at: 'Resources/{0}'!", DIALOGUE_SO_DIRECTORY + filename);
             return;
         }
-        this.PlayDialogueSequence(dialogueSequenceFile.dialogues);
+        this.PlayDialogueSequence(dialogueSequenceFile);
     }
 
     /// <summary>
     /// Plays a dialogue sequence (sets it to start)
     /// </summary>
-    public void PlayDialogueSequence(List<Dialogue> dialogues)
+    public void PlayDialogueSequence(DialogueSequenceScriptableObject dialogueSequence)
     {
         if (currentlyInDialogue) return;
 
         dialogueQueue.Clear();
-        // reads the corresponding file for the dialogue
+
+        this.currentDialogueSequence = dialogueSequence;
+        List<Dialogue> dialogues = dialogueSequence.dialogues;
         foreach (Dialogue d in dialogues) 
             this.dialogueQueue.Enqueue(d);
 
@@ -108,7 +117,10 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     {
         if (dialogueQueue.Count == 0) // end of dialogue
         {
-            EndDialogue();
+            if (this.currentDialogueSequence.choices.Count > 0) 
+                HandleChoices();
+            else
+                EndDialogue();
             return;
         }
 
@@ -123,6 +135,28 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         StopAllCoroutines();
         StartCoroutine(TypeSentence(currentDialogue.sentence));
     }
+
+    private void HandleChoices() {
+        this.currentlyWaitingChoice = true;
+        // Clear any existing choice UI
+        foreach (Transform child in this.choiceUIRect)
+            Destroy(child.gameObject);
+        // Fill Rect
+        foreach (DialogueChoice choice in this.currentDialogueSequence.choices) {
+            DialogueChoiceUI ui = GameObject.Instantiate(choiceUIPrefab, choiceUIRect).GetComponent<DialogueChoiceUI>();
+            ui.Init(choice.label, () => OnChoiceSelected(choice));
+        }
+        this.choicesPanel.SetActive(true);
+    }
+
+    private void OnChoiceSelected(DialogueChoice c) {
+        this.currentlyWaitingChoice = false;
+        this.choicesPanel.SetActive(false);
+        EndDialogue();
+        if (c.nextDialogueSequence != null)
+            this.PlayDialogueSequence(c.nextDialogueSequence);
+    }
+
 
     /// <summary>
     /// Plays Typing Animation

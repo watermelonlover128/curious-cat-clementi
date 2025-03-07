@@ -5,5 +5,5 @@ using UnityEngine;
 public class DialogueSequenceScriptableObject : ScriptableObject
 {
     public List<Dialogue> dialogues;
-
+    public List<DialogueChoice> choices;
 }

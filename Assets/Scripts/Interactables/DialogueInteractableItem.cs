@@ -17,6 +17,6 @@ public class DialogueInteractableItem : Interactable
             return;
         }
 
-        DialogueManager.Instance.PlayDialogueSequence(dialogueSequenceObject.dialogues);
+        DialogueManager.Instance.PlayDialogueSequence(dialogueSequenceObject);
     }
 }
