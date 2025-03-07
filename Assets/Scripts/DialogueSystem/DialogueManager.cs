@@ -6,60 +6,94 @@ using System.IO;
 using System.Text;
 using TMPro;
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 {
-    public static DialogueManager instance; 
 
+    [Header("Settings")]
     [SerializeField]
     private float textDelay = 0.05f;
+    [Header("UI")]
+    [SerializeField]
+    private GameObject dialoguePanel;
+    [SerializeField]
+    private TextMeshProUGUI speakerNameUI;
+    [SerializeField]
+    private TextMeshProUGUI dialogueTextUI;
 
-    private Queue<Dialogue> sentences = new Queue<Dialogue>();
+
+    private SpeakerDataHandler speakerDataHandler = new SpeakerDataHandler();
+
+
+    private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
     private bool currentlyInDialogue = false;
     private bool currentlyTyping = false;
-    private Dialogue currentLine;
+    private Dialogue currentDialogue;
 
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI speakerText;
-    public TextMeshProUGUI speechText;
 
-    // sets a global static instance of dialogue manager so other scripts can access it
-    void Awake() {
-        if (instance == null) {
-            instance = this;
-        } else {
-            Destroy(gameObject);
-        }
-    }
+    private const string DIALOGUE_SO_DIRECTORY = "Dialogue/";
 
-    void Start() {
-        dialoguePanel.SetActive(false); // ensure the dialogue UI isnt visible initially
-    }
+    
 
-    void Update()
+    void Start() 
     {
-        if (currentlyInDialogue && Input.anyKeyDown)
+        this.speakerDataHandler.Init();
+        dialoguePanel.SetActive(false); // ensure the dialogue UI isnt visible initially
+
+        InputHandler.Instance.OnDialogueInput += OnDialogueInput;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        if (InputHandler.Instance != null)
+            InputHandler.Instance.OnDialogueInput -= OnDialogueInput;
+
+    }
+
+    private void OnDialogueInput() 
+    {
+        if (!currentlyInDialogue)
+            return;
+       
+        if (currentlyTyping)
         {
-            if (currentlyTyping) 
-            {
-                // skips typewriting animation
-                StopAllCoroutines(); 
-                speechText.text = currentLine.sentence;
-                currentlyTyping = false;
-            }
-            else
-            {
-                DisplayNextSentence();
-            }
+            // skips typewriting animation
+            StopAllCoroutines();
+            dialogueTextUI.text = currentDialogue.sentence;
+            currentlyTyping = false;
+        }
+        else
+        {
+            DisplayNextSentence();
         }
     }
 
-    public void StartDialogue(string filename)
+    /// <summary>
+    /// Plays a dialogue sequence (sets it to start) based on its SO file path
+    /// </summary>
+    public void PlayDialogueSequence(string filename)
+    {
+        DialogueSequenceScriptableObject dialogueSequenceFile = (DialogueSequenceScriptableObject)Resources.Load(DIALOGUE_SO_DIRECTORY + filename);
+        if (dialogueSequenceFile == null)
+        {
+            Debug.LogErrorFormat("DialogueManager: DialogueSequenceScriptableObject could not be found at: 'Resources/{0}'!", DIALOGUE_SO_DIRECTORY + filename);
+            return;
+        }
+        this.PlayDialogueSequence(dialogueSequenceFile.dialogues);
+    }
+
+    /// <summary>
+    /// Plays a dialogue sequence (sets it to start)
+    /// </summary>
+    public void PlayDialogueSequence(List<Dialogue> dialogues)
     {
         if (currentlyInDialogue) return;
 
+        dialogueQueue.Clear();
         // reads the corresponding file for the dialogue
-        sentences.Clear();
-        ReadFile(filename);
+        foreach (Dialogue d in dialogues) 
+            this.dialogueQueue.Enqueue(d);
 
         dialoguePanel.SetActive(true);
         currentlyInDialogue = true;
@@ -67,77 +101,108 @@ public class DialogueManager : MonoBehaviour
         DisplayNextSentence();
     }
 
-    public void DisplayNextSentence()
+    /// <summary>
+    /// Displays Next Dialogue in Sequence 
+    /// </summary>
+    private void DisplayNextSentence()
     {
-        if (sentences.Count == 0) // end of dialogue
+        if (dialogueQueue.Count == 0) // end of dialogue
         {
             EndDialogue();
             return;
         }
 
         // grabs next line, sets corresponding speaker
-        currentLine = sentences.Dequeue();
-        speakerText.text = currentLine.speaker;
+        currentDialogue = dialogueQueue.Dequeue();
+        SpeakerData speaker = this.speakerDataHandler.GetSpeakerData(currentDialogue.speaker);
+        speakerNameUI.text = speaker.name;
 
         currentlyInDialogue = true;
 
         // ensure previous typewriter coroutine is stopped before starting a new one
         StopAllCoroutines();
-        StartCoroutine(TypeSentence(currentLine.sentence));
+        StartCoroutine(TypeSentence(currentDialogue.sentence));
     }
 
-    // creates the typing animation
+    /// <summary>
+    /// Plays Typing Animation
+    /// </summary>
     IEnumerator TypeSentence(string sentence)
     {
-        speechText.text = "";
+        dialogueTextUI.text = "";
         currentlyTyping = true;
 
         foreach(char letter in sentence.ToCharArray())
         {
-            speechText.text += letter;
+            dialogueTextUI.text += letter;
             yield return new WaitForSeconds(textDelay);
         }
 
         currentlyTyping = false;
     }
 
-    // resets everything
+    /// <summary>
+    /// Resets everything.
+    /// </summary>
     public void EndDialogue()
     {
         currentlyInDialogue = false;
         dialoguePanel.SetActive(false);
 
-        speakerText.text = "";
-        speechText.text = "";
+        speakerNameUI.text = "";
+        dialogueTextUI.text = "";
     }
 
-    // story texts are stored in txt files under resources (can change the location of txt file storage later)
-    // txt files follow a format of first line speaker, second line dialogue text, and repeat
-    public void ReadFile(string filename)
+}
+
+[System.Serializable]
+public enum SpeakerID {
+    PlayerCat = 0,
+    Cat1,
+    Cat2,
+    Cat3,
+
+}
+
+class SpeakerDataHandler {
+    private const string SPEAKER_DATA_FILENAME = "SpeakersData";
+    private Dictionary<SpeakerID, SpeakerData> speakersData;
+
+    public void Init() {
+        SpeakerInfoScriptableObject speakersDataFile = (SpeakerInfoScriptableObject)Resources.Load(SPEAKER_DATA_FILENAME);
+        if (speakersDataFile == null) {
+            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Speaker Sprites Data Scriptable Object could not be found at: 'Resources/{0}'!", SPEAKER_DATA_FILENAME);
+            return;
+        }
+        this.speakersData = speakersDataFile.speakersData;
+
+    }
+
+    public Sprite GetSpeakerSprite(SpeakerID id) {
+        if (!speakersData.ContainsKey(id)) {
+            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Could not find sprite data for speaker id {0}!", id);
+            return null;
+        }
+        return speakersData[id].sprite;
+    }
+
+    public string GetSpeakerName(SpeakerID id)
     {
-        TextAsset file = (TextAsset)Resources.Load("Story/" + filename);
-
-        using (StringReader sr = new StringReader(file.text))
+        if (!speakersData.ContainsKey(id))
         {
-            string line;
-            int counter = 1;
-            Dialogue temp = new Dialogue();
+            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Could not find name data for speaker id {0}!", id);
+            return null;
+        }
+        return speakersData[id].name;
+    }
 
-            while ((line = sr.ReadLine()) != null)
-            {
-                if (counter == 1)
-                {
-                    temp.speaker = line;
-                }
-                else if (counter == 2)
-                {
-                    temp.sentence = line;
-                    sentences.Enqueue(temp);
-                    temp = new Dialogue();
-                    counter = 0;
-                }
-                counter++;
-            }
-        } 
+    public SpeakerData GetSpeakerData(SpeakerID id)
+    {
+        if (!speakersData.ContainsKey(id))
+        {
+            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Could not find speaker data for speaker id {0}!", id);
+            return new SpeakerData();
+        }
+        return speakersData[id];
     }
 }

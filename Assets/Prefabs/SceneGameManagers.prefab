@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677694628035684777}
   - component: {fileID: 2470080590053371093}
+  - component: {fileID: 4959913614280723476}
   m_Layer: 0
   m_Name: SceneGameManagers
   m_TagString: Untagged
@@ -44,3 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40fe52a6756e7844abfe410945f7cc3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4959913614280723476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932741975963653959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e110f43db2d0274998eb361447b3ef6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textDelay: 0.05
+  dialoguePanel: {fileID: 0}
+  speakerNameUI: {fileID: 0}
+  dialogueTextUI: {fileID: 0}

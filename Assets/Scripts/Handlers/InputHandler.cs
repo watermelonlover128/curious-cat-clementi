@@ -9,6 +9,9 @@ public class InputHandler : MonoBehaviourSingleton<InputHandler> {
     public delegate void PlayerInteractInput();
     public event PlayerInteractInput OnPlayerInteractInput;
 
+    public delegate void DialogueInput();
+    public event DialogueInput OnDialogueInput;
+
 
     void FixedUpdate()
     {
@@ -38,6 +41,9 @@ public class InputHandler : MonoBehaviourSingleton<InputHandler> {
         // Check Player Interact Input
         if (Input.GetKeyDown(KeybindSettings.KEY_INTERACT))
             this.OnPlayerInteractInput?.Invoke();
+        // Check Skip Dialogue Input
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) 
+            this.OnDialogueInput?.Invoke();
         
     }
 

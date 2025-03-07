@@ -5,15 +5,18 @@ using UnityEngine;
 public class DialogueInteractableItem : Interactable
 {
     [SerializeField]
-    private string dialogueFileName;
+    private DialogueSequenceScriptableObject dialogueSequenceObject;
     public override void Interact() {
-        TriggerDialogue(dialogueFileName);
+        TriggerDialogue(dialogueSequenceObject);
     }
 
-    public void TriggerDialogue(string filename)
+    public void TriggerDialogue(DialogueSequenceScriptableObject dialogueSequenceObject)
     {
-        if (!DialogueManager.instance) return;
+        if (!DialogueManager.Instance) {
+            Debug.LogError("DialogueInteractableItem: DialogueManager Instance not found!");
+            return;
+        }
 
-        DialogueManager.instance.StartDialogue(filename);
+        DialogueManager.Instance.PlayDialogueSequence(dialogueSequenceObject.dialogues);
     }
 }

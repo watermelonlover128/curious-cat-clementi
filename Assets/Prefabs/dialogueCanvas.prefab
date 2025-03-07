@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 8211912620613608497}
   - component: {fileID: 8799747865765010459}
   m_Layer: 5
-  m_Name: Panel (1)
+  m_Name: speakerBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,6 @@ GameObject:
   - component: {fileID: 4632895671737781182}
   - component: {fileID: 3449402030306794536}
   - component: {fileID: 8463328120742940926}
-  - component: {fileID: 1483792738859069636}
   m_Layer: 5
   m_Name: dialogueCanvas
   m_TagString: Untagged
@@ -256,22 +255,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1483792738859069636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2036022815238222255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e110f43db2d0274998eb361447b3ef6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textDelay: 0.05
-  dialoguePanel: {fileID: 335498717684825284}
-  speakerText: {fileID: 415491205292187388}
-  speechText: {fileID: 7357108021415383028}
 --- !u!1 &3047586622524866409
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +267,7 @@ GameObject:
   - component: {fileID: 1290130466434431856}
   - component: {fileID: 1403029853937368390}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: dialogueBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

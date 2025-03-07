@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Dialogue
+public struct Dialogue
 {   
-    public string speaker;
+    public SpeakerID speaker;
     public string sentence;
 }
