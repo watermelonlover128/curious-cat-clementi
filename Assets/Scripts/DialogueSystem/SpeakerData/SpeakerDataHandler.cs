@@ -1,6 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public enum SpeakerID
+{
+    PlayerCat = 0,
+    Cat1,
+    Cat2,
+    Cat3,
+
+}
+
 /// <summary>
 /// Handles speaker data for dialogues
 /// TODO: If used by other classes and not just DialogueManager, make a singleton instead.

@@ -1,35 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;  
-using System.IO;  
-using System.Text;
-using TMPro;
 
+/// <summary>
+/// Dialogue System
+/// Manages the playing of dialogues in the game
+/// </summary>
 public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 {
-
-    [Header("Settings")]
+    [Header("UI Reference")]
     [SerializeField]
-    private float textDelay = 0.05f;
-    [Header("Dialogue UI")]
-    [SerializeField]
-    private GameObject dialoguePanel;
-    [SerializeField]
-    private TextMeshProUGUI speakerNameUI;
-    [SerializeField]
-    private TextMeshProUGUI dialogueTextUI;
-    [Header("Dialogue Choices UI")]
-    [SerializeField]
-    private GameObject choicesPanel;
-    [SerializeField]
-    private GameObject choiceUIPrefab;
-    [SerializeField]
-    private Transform choiceUIRect;
+    private DialogueUIHandler uiHandler;
 
     private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
     private bool currentlyInDialogue = false;
-    private bool currentlyTyping = false;
     private bool currentlyWaitingChoice = false;
     private Dialogue currentDialogue;
     private DialogueSequenceScriptableObject currentDialogueSequence;
@@ -41,8 +24,8 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     void Start() 
     {
-        dialoguePanel.SetActive(false); // ensure the dialogue UI isnt visible initially
-
+        uiHandler.HideChoicesPanel();
+        uiHandler.HideDialoguePanel();
         InputHandler.Instance.OnDialogueInput += OnDialogueInput;
     }
 
@@ -55,20 +38,18 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     }
 
+    /// <summary>
+    /// Called when dialogue-related input is entered
+    /// </summary>
     private void OnDialogueInput() 
     {
-        if (currentlyWaitingChoice || !currentlyInDialogue)
+        if (currentlyWaitingChoice || !currentlyInDialogue) // no action on input
             return;
        
-        if (currentlyTyping)
-        {
-            StopAllCoroutines(); // skips typewriting animation
-            dialogueTextUI.text = currentDialogue.sentence;
-            currentlyTyping = false;
+        if (uiHandler.SkipTextAnimation()) // input results in skipping of text anim
             return;
-        }
-     
-        DisplayNextSentence();
+
+        DisplayNextSentence(); // input results in playing next dialogue
         
     }
 
@@ -100,7 +81,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         foreach (Dialogue d in dialogues) 
             this.dialogueQueue.Enqueue(d);
 
-        dialoguePanel.SetActive(true);
+        uiHandler.ShowDialoguePanel();
         currentlyInDialogue = true;
 
         DisplayNextSentence();
@@ -114,7 +95,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         if (dialogueQueue.Count == 0) // end of dialogue
         {
             if (this.currentDialogueSequence.choices.Count > 0) 
-                HandleChoices();
+                EnableChoices();
             else
                 EndDialogue();
             return;
@@ -122,74 +103,38 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
         // grabs next line, sets corresponding speaker
         currentDialogue = dialogueQueue.Dequeue();
-        SpeakerData speaker = SpeakerDataHandler.Instance.GetSpeakerData(currentDialogue.speaker);
-        speakerNameUI.text = speaker.name;
-
+        uiHandler.SetSpeakerUI(currentDialogue.speaker);
+        uiHandler.SetNewDialogueText(currentDialogue.sentence);
         currentlyInDialogue = true;
-
-        // ensure previous typewriter coroutine is stopped before starting a new one
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(currentDialogue.sentence));
     }
-
-    private void HandleChoices() {
-        this.currentlyWaitingChoice = true;
-        // Clear any existing choice UI
-        foreach (Transform child in this.choiceUIRect)
-            Destroy(child.gameObject);
-        // Fill Rect
-        foreach (DialogueChoice choice in this.currentDialogueSequence.choices) {
-            DialogueChoiceUI ui = GameObject.Instantiate(choiceUIPrefab, choiceUIRect).GetComponent<DialogueChoiceUI>();
-            ui.Init(choice.label, () => OnChoiceSelected(choice));
-        }
-        this.choicesPanel.SetActive(true);
-    }
-
-    private void OnChoiceSelected(DialogueChoice c) {
-        this.currentlyWaitingChoice = false;
-        this.choicesPanel.SetActive(false);
-        EndDialogue();
-        if (c.nextDialogueSequence != null)
-            this.PlayDialogueSequence(c.nextDialogueSequence);
-    }
-
 
     /// <summary>
-    /// Plays Typing Animation
+    /// Display choices and waits for user to select one
     /// </summary>
-    IEnumerator TypeSentence(string sentence)
-    {
-        dialogueTextUI.text = "";
-        currentlyTyping = true;
-
-        foreach(char letter in sentence.ToCharArray())
-        {
-            dialogueTextUI.text += letter;
-            yield return new WaitForSeconds(textDelay);
-        }
-
-        currentlyTyping = false;
+    private void EnableChoices() {
+        this.currentlyWaitingChoice = true;
+        this.uiHandler.ShowChoicesPanel(this.currentDialogueSequence.choices, this.OnChoiceSelected);
     }
 
     /// <summary>
-    /// Resets everything.
+    /// Callback function, called when a choice has been selected
+    /// </summary>
+    private void OnChoiceSelected(DialogueChoice choice) {
+        this.currentlyWaitingChoice = false;
+        this.uiHandler.HideChoicesPanel();
+        this.EndDialogue();
+        if (choice.nextDialogueSequence != null)
+            this.PlayDialogueSequence(choice.nextDialogueSequence);
+    }
+
+    /// <summary>
+    /// Resets everything, called when a dialogue has ended
     /// </summary>
     public void EndDialogue()
     {
         currentlyInDialogue = false;
-        dialoguePanel.SetActive(false);
-
-        speakerNameUI.text = "";
-        dialogueTextUI.text = "";
+        uiHandler.HideDialoguePanel();
     }
 
 }
 
-[System.Serializable]
-public enum SpeakerID {
-    PlayerCat = 0,
-    Cat1,
-    Cat2,
-    Cat3,
-
-}
