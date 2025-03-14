@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 3885186272629083982}
   - component: {fileID: 2548599563066501257}
   m_Layer: 5
-  m_Name: speakerText
+  m_Name: speakerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

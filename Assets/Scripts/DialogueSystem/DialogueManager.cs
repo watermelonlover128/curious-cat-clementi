@@ -27,9 +27,6 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     [SerializeField]
     private Transform choiceUIRect;
 
-    private SpeakerDataHandler speakerDataHandler = new SpeakerDataHandler();
-
-
     private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
     private bool currentlyInDialogue = false;
     private bool currentlyTyping = false;
@@ -44,7 +41,6 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     void Start() 
     {
-        this.speakerDataHandler.Init();
         dialoguePanel.SetActive(false); // ensure the dialogue UI isnt visible initially
 
         InputHandler.Instance.OnDialogueInput += OnDialogueInput;
@@ -126,7 +122,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
         // grabs next line, sets corresponding speaker
         currentDialogue = dialogueQueue.Dequeue();
-        SpeakerData speaker = this.speakerDataHandler.GetSpeakerData(currentDialogue.speaker);
+        SpeakerData speaker = SpeakerDataHandler.Instance.GetSpeakerData(currentDialogue.speaker);
         speakerNameUI.text = speaker.name;
 
         currentlyInDialogue = true;
@@ -196,47 +192,4 @@ public enum SpeakerID {
     Cat2,
     Cat3,
 
-}
-
-class SpeakerDataHandler {
-    private const string SPEAKER_DATA_FILENAME = "SpeakersData";
-    private Dictionary<SpeakerID, SpeakerData> speakersData;
-
-    public void Init() {
-        SpeakerInfoScriptableObject speakersDataFile = (SpeakerInfoScriptableObject)Resources.Load(SPEAKER_DATA_FILENAME);
-        if (speakersDataFile == null) {
-            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Speaker Sprites Data Scriptable Object could not be found at: 'Resources/{0}'!", SPEAKER_DATA_FILENAME);
-            return;
-        }
-        this.speakersData = speakersDataFile.speakersData;
-
-    }
-
-    public Sprite GetSpeakerSprite(SpeakerID id) {
-        if (!speakersData.ContainsKey(id)) {
-            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Could not find sprite data for speaker id {0}!", id);
-            return null;
-        }
-        return speakersData[id].sprite;
-    }
-
-    public string GetSpeakerName(SpeakerID id)
-    {
-        if (!speakersData.ContainsKey(id))
-        {
-            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Could not find name data for speaker id {0}!", id);
-            return null;
-        }
-        return speakersData[id].name;
-    }
-
-    public SpeakerData GetSpeakerData(SpeakerID id)
-    {
-        if (!speakersData.ContainsKey(id))
-        {
-            Debug.LogErrorFormat("DialogueManager:SpeakerSpritesHandler: Could not find speaker data for speaker id {0}!", id);
-            return new SpeakerData();
-        }
-        return speakersData[id];
-    }
 }
