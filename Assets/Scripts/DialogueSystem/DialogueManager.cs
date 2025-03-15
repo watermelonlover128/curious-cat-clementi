@@ -1,143 +1,140 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;  
-using System.IO;  
-using System.Text;
-using TMPro;
 
-public class DialogueManager : MonoBehaviour
+/// <summary>
+/// Dialogue System
+/// Manages the playing of dialogues in the game
+/// </summary>
+public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 {
-    public static DialogueManager instance; 
-
+    [Header("UI Reference")]
     [SerializeField]
-    private float textDelay = 0.05f;
+    private DialogueUIHandler uiHandler;
 
-    private Queue<Dialogue> sentences = new Queue<Dialogue>();
+    private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
     private bool currentlyInDialogue = false;
-    private bool currentlyTyping = false;
-    private Dialogue currentLine;
+    private bool currentlyWaitingChoice = false;
+    private Dialogue currentDialogue;
+    private DialogueSequenceScriptableObject currentDialogueSequence;
 
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI speakerText;
-    public TextMeshProUGUI speechText;
 
-    // sets a global static instance of dialogue manager so other scripts can access it
-    void Awake() {
-        if (instance == null) {
-            instance = this;
-        } else {
-            Destroy(gameObject);
-        }
-    }
+    private const string DIALOGUE_SO_DIRECTORY = "Dialogue/";
 
-    void Start() {
-        dialoguePanel.SetActive(false); // ensure the dialogue UI isnt visible initially
-    }
+    
 
-    void Update()
+    void Start() 
     {
-        if (currentlyInDialogue && Input.anyKeyDown)
-        {
-            if (currentlyTyping) 
-            {
-                // skips typewriting animation
-                StopAllCoroutines(); 
-                speechText.text = currentLine.sentence;
-                currentlyTyping = false;
-            }
-            else
-            {
-                DisplayNextSentence();
-            }
-        }
+        uiHandler.HideChoicesPanel();
+        uiHandler.HideDialoguePanel();
+        InputHandler.Instance.OnDialogueInput += OnDialogueInput;
     }
 
-    public void StartDialogue(string filename)
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        if (InputHandler.Instance != null)
+            InputHandler.Instance.OnDialogueInput -= OnDialogueInput;
+
+    }
+
+    /// <summary>
+    /// Called when dialogue-related input is entered
+    /// </summary>
+    private void OnDialogueInput() 
+    {
+        if (currentlyWaitingChoice || !currentlyInDialogue) // no action on input
+            return;
+       
+        if (uiHandler.SkipTextAnimation()) // input results in skipping of text anim
+            return;
+
+        DisplayNextSentence(); // input results in playing next dialogue
+        
+    }
+
+    /// <summary>
+    /// Plays a dialogue sequence (sets it to start) based on its SO file path
+    /// </summary>
+    public void PlayDialogueSequence(string filename)
+    {
+        DialogueSequenceScriptableObject dialogueSequenceFile = (DialogueSequenceScriptableObject)Resources.Load(DIALOGUE_SO_DIRECTORY + filename);
+        if (dialogueSequenceFile == null)
+        {
+            Debug.LogErrorFormat("DialogueManager: DialogueSequenceScriptableObject could not be found at: 'Resources/{0}'!", DIALOGUE_SO_DIRECTORY + filename);
+            return;
+        }
+        this.PlayDialogueSequence(dialogueSequenceFile);
+    }
+
+    /// <summary>
+    /// Plays a dialogue sequence (sets it to start)
+    /// </summary>
+    public void PlayDialogueSequence(DialogueSequenceScriptableObject dialogueSequence)
     {
         if (currentlyInDialogue) return;
 
-        // reads the corresponding file for the dialogue
-        sentences.Clear();
-        ReadFile(filename);
+        dialogueQueue.Clear();
 
-        dialoguePanel.SetActive(true);
+        this.currentDialogueSequence = dialogueSequence;
+        List<Dialogue> dialogues = dialogueSequence.dialogues;
+        foreach (Dialogue d in dialogues) 
+            this.dialogueQueue.Enqueue(d);
+
+        uiHandler.ShowDialoguePanel();
         currentlyInDialogue = true;
 
         DisplayNextSentence();
     }
 
-    public void DisplayNextSentence()
+    /// <summary>
+    /// Displays Next Dialogue in Sequence 
+    /// </summary>
+    private void DisplayNextSentence()
     {
-        if (sentences.Count == 0) // end of dialogue
+        if (dialogueQueue.Count == 0) // end of dialogue
         {
-            EndDialogue();
+            if (this.currentDialogueSequence.choices.Count > 0) 
+                EnableChoices();
+            else
+                EndDialogue();
             return;
         }
 
         // grabs next line, sets corresponding speaker
-        currentLine = sentences.Dequeue();
-        speakerText.text = currentLine.speaker;
-
+        currentDialogue = dialogueQueue.Dequeue();
+        uiHandler.SetSpeakerUI(currentDialogue.speaker);
+        uiHandler.SetNewDialogueText(currentDialogue.sentence);
         currentlyInDialogue = true;
-
-        // ensure previous typewriter coroutine is stopped before starting a new one
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(currentLine.sentence));
     }
 
-    // creates the typing animation
-    IEnumerator TypeSentence(string sentence)
-    {
-        speechText.text = "";
-        currentlyTyping = true;
-
-        foreach(char letter in sentence.ToCharArray())
-        {
-            speechText.text += letter;
-            yield return new WaitForSeconds(textDelay);
-        }
-
-        currentlyTyping = false;
+    /// <summary>
+    /// Display choices and waits for user to select one
+    /// </summary>
+    private void EnableChoices() {
+        this.currentlyWaitingChoice = true;
+        this.uiHandler.ShowChoicesPanel(this.currentDialogueSequence.choices, this.OnChoiceSelected);
     }
 
-    // resets everything
+    /// <summary>
+    /// Callback function, called when a choice has been selected
+    /// </summary>
+    private void OnChoiceSelected(DialogueChoice choice) {
+        this.currentlyWaitingChoice = false;
+        this.uiHandler.HideChoicesPanel();
+        this.EndDialogue();
+        if (choice.nextDialogueSequence != null)
+            this.PlayDialogueSequence(choice.nextDialogueSequence);
+    }
+
+    /// <summary>
+    /// Resets everything, called when a dialogue has ended
+    /// </summary>
     public void EndDialogue()
     {
         currentlyInDialogue = false;
-        dialoguePanel.SetActive(false);
-
-        speakerText.text = "";
-        speechText.text = "";
+        uiHandler.HideDialoguePanel();
     }
 
-    // story texts are stored in txt files under resources (can change the location of txt file storage later)
-    // txt files follow a format of first line speaker, second line dialogue text, and repeat
-    public void ReadFile(string filename)
-    {
-        TextAsset file = (TextAsset)Resources.Load("Story/" + filename);
-
-        using (StringReader sr = new StringReader(file.text))
-        {
-            string line;
-            int counter = 1;
-            Dialogue temp = new Dialogue();
-
-            while ((line = sr.ReadLine()) != null)
-            {
-                if (counter == 1)
-                {
-                    temp.speaker = line;
-                }
-                else if (counter == 2)
-                {
-                    temp.sentence = line;
-                    sentences.Enqueue(temp);
-                    temp = new Dialogue();
-                    counter = 0;
-                }
-                counter++;
-            }
-        } 
-    }
 }
+

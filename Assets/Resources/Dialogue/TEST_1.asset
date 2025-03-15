@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284845a00066ed64aa22ea94f231a0a6, type: 3}
+  m_Name: TEST_1
+  m_EditorClassIdentifier: 
+  dialogues:
+  - speaker: 0
+    sentence: hi
+  - speaker: 1
+    sentence: ohayooo
+  - speaker: 0
+    sentence: sayonara
+  - speaker: 1
+    sentence: welcome to nus comsci
+  choices:
+  - label: sleep and be jobless
+    nextDialogueSequence: {fileID: 11400000, guid: 372b7ad7d4c8eb9439586f46572cc03a, type: 2}
+  - label: dont sleep
+    nextDialogueSequence: {fileID: 11400000, guid: a1d46f99132954d43b113282e6499a00, type: 2}
