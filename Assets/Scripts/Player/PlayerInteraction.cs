@@ -31,8 +31,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (this.CurrentInteractable == null)
             return;
-        this.CurrentInteractable.Interact();
-        PlayerInteraction.OnInteractedEvent?.Invoke(this.CurrentInteractable.ID);
+        Interactable interactable = this.CurrentInteractable;
+        interactable.Interact();
+        PlayerInteraction.OnInteractedEvent?.Invoke(interactable.ID);
     }
 
     private void SetCurrentInteractable() 
@@ -42,14 +43,15 @@ public class PlayerInteraction : MonoBehaviour
         else
             this.currentInteractable = null;
         
-        if (this.interactablesInRange.Count == 0) {
+        List<Interactable> validInteractables = this.interactablesInRange.FindAll(i => i.IsInteractable);
+        if (validInteractables.Count == 0) {
             this.currentInteractable = null;
             return;
         }
-        this.interactablesInRange.Sort((a, b) =>
+        validInteractables.Sort((a, b) =>
             Vector3.Distance(this.transform.position, a.transform.position).
                 CompareTo(Vector3.Distance(this.transform.position, b.transform.position)));
-        this.currentInteractable = this.interactablesInRange[0];
+        this.currentInteractable = validInteractables[0];
         this.currentInteractable.OnInteractable();
     }
 
@@ -63,7 +65,6 @@ public class PlayerInteraction : MonoBehaviour
             this.interactablesInRange.Add(interactable);
             this.SetCurrentInteractable();
         }
-        
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -76,6 +77,5 @@ public class PlayerInteraction : MonoBehaviour
             this.interactablesInRange.Remove(interactable);
             this.SetCurrentInteractable();
         }
-
     }
 }

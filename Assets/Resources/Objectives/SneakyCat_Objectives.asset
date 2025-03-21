@@ -22,15 +22,15 @@ MonoBehaviour:
     - rid: 6440410744547704850
       type: {class: InteractObjective, ns: , asm: Assembly-CSharp}
       data:
-        label: Interact with Square
+        Label: Interact with SQUARE
         interactableID: SQUARE
     - rid: 6440410744547704851
       type: {class: DialogueObjective, ns: , asm: Assembly-CSharp}
       data:
-        label: Talk to SneakyCat
+        Label: Talk to SneakyCat
         dialogueID: SNEAKYCAT_DIALOGUE_1
     - rid: 6440410744547704853
       type: {class: InteractObjective, ns: , asm: Assembly-CSharp}
       data:
-        label: Interact with Circle
+        Label: Interact with Circle
         interactableID: CIRCLE

@@ -14,12 +14,18 @@ public class ObjectivesUIHandler : MonoBehaviour
 
     void Start()
     {
+        // Listen to ObjectiveManager callbacks
         ObjectivesManager.Instance.OnNewObjectiveEvent += OnNewObjective;
         ObjectivesManager.Instance.OnObjectiveCompletedEvent += OnObjectiveCompleted;
+
+        // Clear UI Rect
+        foreach (Transform child in objectivesUIRect)
+            Destroy(child.gameObject);
     }
 
     void OnDestroy()
     {
+        // Unsubscribe from ObjectiveManager's events
         if (ObjectivesManager.Instance != null) {
             ObjectivesManager.Instance.OnNewObjectiveEvent -= OnNewObjective;
             ObjectivesManager.Instance.OnObjectiveCompletedEvent -= OnObjectiveCompleted;

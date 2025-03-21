@@ -11,10 +11,13 @@ public class Interactable : MonoBehaviour
     private GameObject interactCanvas;
 
     public string ID => this.id;
+
+    public bool IsInteractable {get; protected set;}
     
     void Start()
     {
-        interactCanvas.SetActive(false);   
+        this.IsInteractable = true;
+        this.interactCanvas.SetActive(false);   
     }
     public virtual void Interact()
     {
@@ -23,10 +26,10 @@ public class Interactable : MonoBehaviour
 
     public void OnInteractable() 
     {
-        interactCanvas.SetActive(true);
+        this.interactCanvas.SetActive(true);
     }
     public void OnUninteractable()
     {
-        interactCanvas.SetActive(false);
+        this.interactCanvas.SetActive(false);
     }
 }

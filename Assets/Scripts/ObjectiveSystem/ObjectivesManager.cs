@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class ObjectivesManager : MonoBehaviourSingleton<ObjectivesManager>
 {
+    // TODO: Remove, for testing purposes
+    public ObjectiveSequenceScriptableObject testObjectiveSequence;
+
+
     public delegate void ObjectiveDelegate(Objective objective);
     public event ObjectiveDelegate OnNewObjectiveEvent;
     public event ObjectiveDelegate OnObjectiveCompletedEvent;
+
+    void Start()
+    {
+        this.StartObjectiveSequence(testObjectiveSequence.objectives);   
+    }
 
     public void StartObjectiveSequence(Objective[] objectives) {
         for (int i = 0; i < objectives.Length - 1; i++)

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9213738201512899644}
   - component: {fileID: 8946523002261545749}
   - component: {fileID: 7834847919094970298}
+  - component: {fileID: 2598593975374900961}
   m_Layer: 5
   m_Name: ObjectivesPanel
   m_TagString: Untagged
@@ -77,6 +78,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2598593975374900961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6512118912948308658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3975ca97b414cd40b8f07088e7f7a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectivesUIRect: {fileID: 1129954031035719785}
+  objectiveUIPrefab: {fileID: 5983397190908987214, guid: 1e7047e1d7a909f429b114153044db1e, type: 3}
 --- !u!1 &7422108935903815873
 GameObject:
   m_ObjectHideFlags: 0

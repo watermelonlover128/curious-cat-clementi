@@ -1308,6 +1308,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 715446714269278533, guid: b0ca5819af6b09041b2f40395de0bdf8, type: 3}
+      propertyPath: testObjectiveSequence
+      value: 
+      objectReference: {fileID: 11400000, guid: fc1175bded4aeef438f6ed5342e92218, type: 2}
     - target: {fileID: 1354390817766991494, guid: b0ca5819af6b09041b2f40395de0bdf8, type: 3}
       propertyPath: uiHandler
       value: 
@@ -1374,11 +1378,11 @@ SceneRoots:
   - {fileID: 1210969625}
   - {fileID: 1400620152}
   - {fileID: 805809906}
+  - {fileID: 1178065447}
+  - {fileID: 9205150589733362347}
   - {fileID: 1997261609}
   - {fileID: 1476712360}
   - {fileID: 2131507751}
-  - {fileID: 1178065447}
-  - {fileID: 9205150589733362347}
   - {fileID: 1474212935}
   - {fileID: 4283543164564763579}
   - {fileID: 1776377188}
