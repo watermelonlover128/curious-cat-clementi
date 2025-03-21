@@ -835,6 +835,18 @@ PrefabInstance:
     - target: {fileID: 270954520513873604, guid: 0828a14ae6fcc894381c6ef85fbccbcb, type: 3}
       propertyPath: dialogueSequenceObject
       value: 
+      objectReference: {fileID: 11400000, guid: f306a168713ab6740a5eab4c063d54b5, type: 2}
+    - target: {fileID: 270954520513873604, guid: 0828a14ae6fcc894381c6ef85fbccbcb, type: 3}
+      propertyPath: questDialogues._serializedList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270954520513873604, guid: 0828a14ae6fcc894381c6ef85fbccbcb, type: 3}
+      propertyPath: questDialogues._serializedList.Array.data[0].Key
+      value: OBJ_TALK_SNEAKYCAT
+      objectReference: {fileID: 0}
+    - target: {fileID: 270954520513873604, guid: 0828a14ae6fcc894381c6ef85fbccbcb, type: 3}
+      propertyPath: questDialogues._serializedList.Array.data[0].Value
+      value: 
       objectReference: {fileID: 11400000, guid: 76ffb66205573af4685c4a22382a4810, type: 2}
     - target: {fileID: 833170149171962481, guid: 0828a14ae6fcc894381c6ef85fbccbcb, type: 3}
       propertyPath: m_LocalScale.x

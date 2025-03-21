@@ -12,6 +12,8 @@ public class ObjectivesManager : MonoBehaviourSingleton<ObjectivesManager>
     public event ObjectiveDelegate OnNewObjectiveEvent;
     public event ObjectiveDelegate OnObjectiveCompletedEvent;
 
+    private List<Objective> ongoingObjectives = new List<Objective>();
+
     void Start()
     {
         this.StartObjectiveSequence(testObjectiveSequence.objectives);   
@@ -23,14 +25,20 @@ public class ObjectivesManager : MonoBehaviourSingleton<ObjectivesManager>
         this.ListenObjective(objectives[0]);
     }
 
+    public bool IsObjectiveOngoing(string objectiveID) {
+        return ongoingObjectives.Find(obj => obj.ID == objectiveID) != null;
+    }
+
     private void ListenObjective(Objective objective) {
         objective.Listen();
+        ongoingObjectives.Add(objective);
         objective.OnObjectiveCompletedEvent += OnObjectiveCompleted;
         this.OnNewObjectiveEvent?.Invoke(objective);
     } 
 
     private void OnObjectiveCompleted(Objective objective) {
         this.OnObjectiveCompletedEvent?.Invoke(objective);
+        this.ongoingObjectives.Remove(objective);
         if (objective.Next != null)
             this.ListenObjective(objective.Next);
     }

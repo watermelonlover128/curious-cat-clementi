@@ -12,7 +12,20 @@ public class Interactable : MonoBehaviour
 
     public string ID => this.id;
 
-    public bool IsInteractable {get; protected set;}
+    private bool interactable;
+
+    public bool IsInteractable {
+        get {
+        return this.interactable;
+        }
+        protected set {
+            this.interactable = value;
+            this.OnInteractableStatusChangedEvent?.Invoke();
+        }
+    }
+
+    public delegate void InteractableStatusChanged();
+    public event InteractableStatusChanged OnInteractableStatusChangedEvent;
     
     void Start()
     {

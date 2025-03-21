@@ -33,6 +33,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         Interactable interactable = this.CurrentInteractable;
         interactable.Interact();
+        this.SetCurrentInteractable();
         PlayerInteraction.OnInteractedEvent?.Invoke(interactable.ID);
     }
 
@@ -63,6 +64,7 @@ public class PlayerInteraction : MonoBehaviour
         Interactable interactable = other.gameObject.GetComponent<Interactable>();
         if (interactable != null) {
             this.interactablesInRange.Add(interactable);
+            interactable.OnInteractableStatusChangedEvent += this.SetCurrentInteractable;
             this.SetCurrentInteractable();
         }
     }
@@ -75,6 +77,7 @@ public class PlayerInteraction : MonoBehaviour
         Interactable interactable = other.gameObject.GetComponent<Interactable>();
         if (interactable != null) {
             this.interactablesInRange.Remove(interactable);
+            interactable.OnInteractableStatusChangedEvent -= this.SetCurrentInteractable;
             this.SetCurrentInteractable();
         }
     }

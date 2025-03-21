@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 [System.Serializable]
 public abstract class Objective {
+    public string ID;
     public string Label;
 
     public delegate void ObjectiveCompleted(Objective obj);
