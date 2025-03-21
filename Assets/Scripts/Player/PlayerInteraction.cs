@@ -7,6 +7,9 @@ public class PlayerInteraction : MonoBehaviour
     private List<Interactable> interactablesInRange = new List<Interactable>();
     private Interactable currentInteractable = null;
 
+    public delegate void Interacted(string interactableID);
+    public static event Interacted OnInteractedEvent;
+
     private Interactable CurrentInteractable 
     { 
         get {
@@ -29,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
         if (this.CurrentInteractable == null)
             return;
         this.CurrentInteractable.Interact();
+        PlayerInteraction.OnInteractedEvent?.Invoke(this.CurrentInteractable.ID);
     }
 
     private void SetCurrentInteractable() 

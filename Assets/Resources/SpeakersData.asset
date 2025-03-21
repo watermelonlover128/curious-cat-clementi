@@ -13,28 +13,20 @@ MonoBehaviour:
   m_Name: SpeakersData
   m_EditorClassIdentifier: 
   speakersData:
-    dictionaryList:
+    _serializedList:
     - Key: 0
       Value:
-        name: Player Cat
+        name: PlayerCat
         sprite: {fileID: 0}
-      index: 0
-      isKeyDuplicated: 0
     - Key: 1
       Value:
-        name: Sneaky Cat
+        name: SneakyCat
         sprite: {fileID: 0}
-      index: 1
-      isKeyDuplicated: 0
     - Key: 2
       Value:
-        name: Cat 2
+        name: Cat2
         sprite: {fileID: 0}
-      index: 2
-      isKeyDuplicated: 0
     - Key: 3
       Value:
-        name: Cat 3
+        name: Cat3
         sprite: {fileID: 0}
-      index: 3
-      isKeyDuplicated: 0

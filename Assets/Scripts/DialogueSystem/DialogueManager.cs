@@ -7,12 +7,13 @@ using UnityEngine;
 /// </summary>
 public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 {
-    [Header("UI Reference")]
+    [Header("UI Handler Reference")]
     [SerializeField]
     private DialogueUIHandler uiHandler;
 
+
     private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
-    private bool currentlyInDialogue = false;
+    private bool CurrentlyInDialogue => this.currentDialogueSequence != null;
     private bool currentlyWaitingChoice = false;
     private Dialogue currentDialogue;
     private DialogueSequenceScriptableObject currentDialogueSequence;
@@ -20,7 +21,11 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     private const string DIALOGUE_SO_DIRECTORY = "Dialogue/";
 
-    
+    public delegate void DialogueAction(string dialogueID);
+    public event DialogueAction OnStartDialogue;
+    public event DialogueAction OnEndDialogue;
+
+
 
     void Start() 
     {
@@ -43,7 +48,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     /// </summary>
     private void OnDialogueInput() 
     {
-        if (currentlyWaitingChoice || !currentlyInDialogue) // no action on input
+        if (currentlyWaitingChoice || !CurrentlyInDialogue) // no action on input
             return;
        
         if (uiHandler.SkipTextAnimation()) // input results in skipping of text anim
@@ -72,8 +77,10 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     /// </summary>
     public void PlayDialogueSequence(DialogueSequenceScriptableObject dialogueSequence)
     {
-        if (currentlyInDialogue) return;
-
+        if (CurrentlyInDialogue) {
+            Debug.LogWarningFormat("DialogueManager: Attempted to play another dialogue '{0}' while currently still in dialogue '{1}'!", dialogueSequence.ID, this.currentDialogueSequence.ID);
+            return;
+        }
         dialogueQueue.Clear();
 
         this.currentDialogueSequence = dialogueSequence;
@@ -82,7 +89,8 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
             this.dialogueQueue.Enqueue(d);
 
         uiHandler.ShowDialoguePanel();
-        currentlyInDialogue = true;
+
+        this.OnStartDialogue?.Invoke(this.currentDialogueSequence.ID);
 
         DisplayNextSentence();
     }
@@ -105,7 +113,6 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         currentDialogue = dialogueQueue.Dequeue();
         uiHandler.SetSpeakerUI(currentDialogue.speaker);
         uiHandler.SetNewDialogueText(currentDialogue.sentence);
-        currentlyInDialogue = true;
     }
 
     /// <summary>
@@ -132,8 +139,9 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     /// </summary>
     public void EndDialogue()
     {
-        currentlyInDialogue = false;
         uiHandler.HideDialoguePanel();
+        this.OnEndDialogue?.Invoke(this.currentDialogueSequence.ID);
+        this.currentDialogueSequence = null;
     }
 
 }

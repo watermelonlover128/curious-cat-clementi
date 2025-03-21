@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class ObjectivesManager : MonoBehaviourSingleton<ObjectivesManager>
 {
-    [Header("UI References")]
-    [SerializeField]
-    private Transform objectivesUIRect;
-    [SerializeField]
-    private Transform objectivesUIPrefab;
+    public delegate void ObjectiveDelegate(Objective objective);
+    public event ObjectiveDelegate OnNewObjectiveEvent;
+    public event ObjectiveDelegate OnObjectiveCompletedEvent;
 
+    public void StartObjectiveSequence(Objective[] objectives) {
+        for (int i = 0; i < objectives.Length - 1; i++)
+            objectives[i].SetNextObjective(objectives[i+1]);
+        this.ListenObjective(objectives[0]);
+    }
 
-
-    public void AddObjective(Objective obj) {
-        obj.OnObjectiveCompletedEvent += OnObjectiveCompleted;
+    private void ListenObjective(Objective objective) {
+        objective.Listen();
+        objective.OnObjectiveCompletedEvent += OnObjectiveCompleted;
+        this.OnNewObjectiveEvent?.Invoke(objective);
     } 
 
-    private void OnObjectiveCompleted(Objective obj) {
-        
+    private void OnObjectiveCompleted(Objective objective) {
+        this.OnObjectiveCompletedEvent?.Invoke(objective);
+        if (objective.Next != null)
+            this.ListenObjective(objective.Next);
     }
 }
