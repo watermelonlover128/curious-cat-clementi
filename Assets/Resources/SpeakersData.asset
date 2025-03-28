@@ -30,3 +30,7 @@ MonoBehaviour:
       Value:
         name: Cat3
         sprite: {fileID: 0}
+    - Key: 4
+      Value:
+        name: Fishmonger
+        sprite: {fileID: 0}

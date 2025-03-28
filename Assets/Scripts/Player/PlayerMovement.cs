@@ -35,6 +35,9 @@ public class PlayerMovement : MonoBehaviour {
 
     void FixedUpdate()
     {
+        // stop player movement if paused, but not sure if this is the best way to do it
+        if (PauseManager.Instance && PauseManager.Instance.isPaused) return;
+
         bool isMoving = this.velocity.sqrMagnitude > 0;
         // Update Animator
         this.animator.SetBool("IsRunning", isMoving);

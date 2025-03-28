@@ -8,6 +8,7 @@ public enum SpeakerID
     Cat1,
     Cat2,
     Cat3,
+    Fishmonger
 
 }
 

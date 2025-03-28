@@ -1709,6 +1709,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnterFishStallDialogue: {fileID: 11400000, guid: 416affbe21c5549429e9cc70f12afd82, type: 2}
+  FishmongerSeesCatDialogue: {fileID: 11400000, guid: 75f6fe6b2706d3746855078056c149d2, type: 2}
+  FishmongerCapturesCatDialogue: {fileID: 11400000, guid: 245749d156c17ed40bad030da3cdc48f, type: 2}
   gameOverCanvas: {fileID: 351156160}
   exit: {fileID: 1394794412}
   respawnEntrance: {fileID: 683185809}

@@ -27,12 +27,11 @@ public class EnemyStateManager: MonoBehaviour
         [field: SerializeField] public float rotationSpeed { get; private set; } = 5f;
     
     [field: Header("Object References")]
-    public Transform deathzone;
-    public GameObject aggroZone;
-    public GameObject captureZone;
-    public AIPath aiPath;
-    public List<Transform> waypoints { get; private set; } = new List<Transform>();
-
+        public Transform deathzone;
+        public GameObject aggroZone;
+        public GameObject captureZone;
+        public AIPath aiPath;
+        public List<Transform> waypoints { get; private set; } = new List<Transform>(); 
 
     void Start() {
         foreach (Transform child in path) {
@@ -86,5 +85,4 @@ public class EnemyStateManager: MonoBehaviour
     public void EnableChase() {
         aggroZone.SetActive(true);
     }
-
 }

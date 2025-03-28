@@ -33,7 +33,7 @@ public class enemyVisionZone : MonoBehaviour
 
         // game over when time is up
         if (timeInZone >= timeToGameOver) {
-            FishStallSceneManager.instance.GameOver();
+            FishStallSceneManager.instance.DisplayGameOverDialogue();
         }
 
         // update the time indicator
