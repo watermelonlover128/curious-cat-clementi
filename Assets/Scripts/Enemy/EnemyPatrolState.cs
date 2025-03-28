@@ -8,7 +8,7 @@ public class EnemyPatrolState : EnemyBaseState
     private int dir = 1;
 
     public override void EnterState(EnemyStateManager enemy) {
-        // set starting position and make sure pathfinding is disabled
+        // make sure pathfinding is disabled, only enable relevant hitboxes
         enemy.aiPath.canMove = false;
         enemy.deathzone.gameObject.SetActive(true);
         enemy.captureZone.SetActive(false);

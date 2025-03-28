@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 6096879936787229008}
   - component: {fileID: 857408144957530557}
   m_Layer: 0
-  m_Name: deathzone
+  m_Name: visionZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,13 +107,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2224404870578607393}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.70476204, w: -0.7094438}
+  m_LocalRotation: {x: -0, y: -0, z: 0.71283144, w: -0.7013355}
   m_LocalPosition: {x: 0.01, y: -0.01, z: 0}
   m_LocalScale: {x: 0.8019422, y: 0.6570741, z: 0.7218463}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3622975743856395398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -270.379}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -450.932}
 --- !u!60 &5914911672914914861
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -232,12 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad9c606b55f7174b98beed5497027b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverScreen: {fileID: 0}
   barFill: {fileID: 8346519513048178558}
   enemy: {fileID: 6978840757891826952}
   timeInZone: 0
   timeToGameOver: 1.5
-  timeMultiplier: 1.05
   timeDepleteMultiplier: 1.1
 --- !u!1 &2665577695489843748
 GameObject:
@@ -515,7 +513,7 @@ GameObject:
   - component: {fileID: 934166468771418281}
   - component: {fileID: 6978840757891826952}
   m_Layer: 0
-  m_Name: Enemy (3)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -664,7 +662,7 @@ MonoBehaviour:
   <moveSpeed>k__BackingField: 1.2
   <rotationSpeed>k__BackingField: 5
   deathzone: {fileID: 3310573933178352318}
-  aggroZone: {fileID: 4156880860904218687}
+  aggroZone: {fileID: 8371283211233120326}
   captureZone: {fileID: 69953217168983976}
   aiPath: {fileID: 0}
 --- !u!1 &8371283211233120326
@@ -684,7 +682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9070337522371226723
 Transform:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using Pathfinding;
 public class EnemyStateManager: MonoBehaviour
 {
     private EnemyBaseState currentState;
+    private EnemyBaseState stateBeforePause;
 
     // concrete states   
     public EnemyPatrolState patrolState { get; private set; } = new EnemyPatrolState();
@@ -27,12 +28,11 @@ public class EnemyStateManager: MonoBehaviour
     
     [field: Header("Object References")]
     public Transform deathzone;
-    public AggroZone aggroZone;
+    public GameObject aggroZone;
     public GameObject captureZone;
     public AIPath aiPath;
     public List<Transform> waypoints { get; private set; } = new List<Transform>();
 
-    private EnemyBaseState stateBeforePause;
 
     void Start() {
         foreach (Transform child in path) {
@@ -47,6 +47,7 @@ public class EnemyStateManager: MonoBehaviour
         PauseManager.Instance.OnPause += Pause;
         PauseManager.Instance.OnUnpause += Unpause;
         FishStallSceneManager.instance.OnRespawn += Respawn;
+        FishStallSceneManager.instance.ChaseBegin += EnableChase;
     }
 
     void Update()
@@ -75,10 +76,15 @@ public class EnemyStateManager: MonoBehaviour
         ChangeState(stateBeforePause);
     }
 
+    // if game over and they restart, put them back into their starting positions
     public void Respawn() {
         transform.position = waypoints[0].transform.position;
         ChangeState(patrolState);
-        aggroZone.ForceCheckAggro();
+    }
+
+    // enable aggro zone so that enemies can chase you
+    public void EnableChase() {
+        aggroZone.SetActive(true);
     }
 
 }

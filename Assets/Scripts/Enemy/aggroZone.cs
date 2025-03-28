@@ -10,18 +10,15 @@ public class AggroZone : MonoBehaviour
 
     // check if player in zone, helps when the chase sequence begins and the player is already in range
     private bool playerInZone = false; 
-    private bool canAggro = false;
     private bool isChasing = false;
 
-    void Start() {
-        if (FishStallSceneManager.instance) {
-            FishStallSceneManager.instance.ChaseBegin += EnableChase;
-        }
+    void OnEnable() {
+        FishStallSceneManager.instance.OnRespawn += ForceCheckAggro;
     }
     
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player") {
-            if (canAggro && !isChasing) {
+            if (!isChasing) {
                 enemy.ChangeState(enemy.chaseState);
                 isChasing = true;
             }
@@ -36,14 +33,9 @@ public class AggroZone : MonoBehaviour
         }
     }
 
-    private void EnableChase() {
-        canAggro = true;
-        ForceCheckAggro();
-    }
-
     // for cases when the player is already in range and the enemy is set to chase 
     public void ForceCheckAggro() {
-        if (playerInZone && canAggro) {
+        if (playerInZone) {
             enemy.ChangeState(enemy.chaseState);
             isChasing = true;
         }

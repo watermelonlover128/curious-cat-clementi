@@ -6,33 +6,30 @@ using System;
 public class FishStallSceneManager : MonoBehaviour
 {
     public static FishStallSceneManager instance;
-    public enum GameStates {
-        EnterState,
-        GetFishState,
-        EscapeState,
-        GameOverState
-    };
-    public GameStates currentState { get; private set; } = GameStates.EnterState; // not sure if we truly need to check state like this, will see how
-
+    
+    // events 
     public event Action ChaseBegin;
     public event Action OnGameOver;
     public event Action OnRespawn;
 
     [SerializeField] 
-    private DialogueSequenceScriptableObject EnterFishStallDialogue;
+    private DialogueSequenceScriptableObject EnterFishStallDialogue; 
+
     [SerializeField]
-    private GameObject gameOverCanvas;
+    private GameObject gameOverCanvas; 
+
     [SerializeField]
-    private GameObject exit;
+    private GameObject exit; // only enables this when the escape sequence begins
+
+    // respawn points
     [SerializeField]
     private Transform respawnEntrance;
     [SerializeField]
     private Transform respawnEnd;
+
+    // reference to player
     [SerializeField]
     private Transform player;
-    [SerializeField]
-    private Transform enemiesParent;
-    private List<EnemyStateManager> enemies = new List<EnemyStateManager>();
 
     void Awake() {
         if (instance == null) {
@@ -52,10 +49,6 @@ public class FishStallSceneManager : MonoBehaviour
         if (!DialogueManager.Instance) {
             Debug.LogError("FishStallSceneManager: DialogueManager Instance not found!");
             return;
-        }
-
-        foreach (Transform child in enemiesParent) {
-            enemies.Add(child.GetComponent<EnemyStateManager>());
         }
 
         ObjectivesManager.Instance.OnNewObjectiveEvent += OnObjectiveBegin;
@@ -100,6 +93,7 @@ public class FishStallSceneManager : MonoBehaviour
         }
     }
 
+    // pausing and unpausing game when dialogue starts 
     private void OnStartDialogue(string dialogueID) {
         PauseManager.Instance?.Pause();
     }
@@ -108,6 +102,7 @@ public class FishStallSceneManager : MonoBehaviour
         PauseManager.Instance?.UnPause();
     }
 
+    // display game over screen, pause game 
     public void GameOver() {
         PauseManager.Instance?.Pause();
         OnGameOver?.Invoke();
@@ -115,6 +110,8 @@ public class FishStallSceneManager : MonoBehaviour
     }
 
     public void ReloadScene() {
+        // resets player to the appropriate respawn points
+        // doing it like this because i didnt want to make player script subscribe to these events 
         if (ObjectivesManager.Instance.IsObjectiveOngoing("OBTAIN_FISH")) {
             player.transform.position = respawnEntrance.position;
         } else if (ObjectivesManager.Instance.IsObjectiveOngoing("ESCAPE_FISHSTALL")) {
