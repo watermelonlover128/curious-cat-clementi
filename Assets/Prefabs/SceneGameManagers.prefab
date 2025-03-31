@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fd0728f7a69bb448b29d1c97e79121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testObjectiveSequence: {fileID: 0}
 --- !u!1 &1959876130298468261
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +101,8 @@ GameObject:
   - component: {fileID: 677694628035684777}
   - component: {fileID: 2470080590053371093}
   - component: {fileID: 6925015993552732084}
+  - component: {fileID: 8045663653543321892}
+  - component: {fileID: 1266824218139184311}
   m_Layer: 0
   m_Name: SceneGameManagers
   m_TagString: Untagged
@@ -148,4 +151,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6926684684b16434096a2585356d0b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testObjectiveSequence: {fileID: 11400000, guid: fc1175bded4aeef438f6ed5342e92218, type: 2}
+  mainCamera: {fileID: 0}
+  playerPrefab: {fileID: 0}
+--- !u!114 &8045663653543321892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932741975963653959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaca1b61ac5917a40bd40d027e3daa7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scenes:
+    _serializedList:
+    - Key: 1
+      Value: GameManagers
+    - Key: 2
+      Value: MainGameScene
+    - Key: 3
+      Value: FishMarketStallScene
+--- !u!114 &1266824218139184311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932741975963653959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fe2867ca0c2f845974de2a8ba05ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -10,9 +10,8 @@ public abstract class PlayerCamera : MonoBehaviour
         Delay,
         Edge
     }
-    [SerializeField]
     private Transform followTarget = null;
-    protected Vector3 FollowTargetPosition { get => followTarget.position; }
+    protected Vector3 FollowTargetPosition { get => this.followTarget.position; }
 
     void Update()
     {
@@ -20,6 +19,13 @@ public abstract class PlayerCamera : MonoBehaviour
     }
 
     public abstract void UpdateCamera();
+
+    public void SetTarget(Transform target) {
+        this.followTarget = target;
+        this.transform.position = new Vector3(this.FollowTargetPosition.x,
+                                    this.FollowTargetPosition.y,
+                                    this.transform.position.z);
+    }
     
 
 }

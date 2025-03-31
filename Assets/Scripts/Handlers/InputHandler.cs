@@ -15,6 +15,8 @@ public class InputHandler : MonoBehaviourSingleton<InputHandler> {
 
     void FixedUpdate()
     {
+        if (PauseManager.Instance != null && PauseManager.Instance.isPaused)
+            return;
         // Check Player Movement Input
         Vector2 dir = Vector2.zero;
         if (Input.GetKey(KeybindSettings.MOVEMENT_UP)) {

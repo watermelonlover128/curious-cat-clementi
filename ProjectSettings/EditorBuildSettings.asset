@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/GameManagers.unity
+    guid: 66c54b08a72993043b1dd2423bc423cf
+  - enabled: 1
+    path: Assets/Scenes/MainGameScene.unity
+    guid: b774eeebf13bde348a9a5d6e94189d16
+  - enabled: 1
+    path: Assets/Scenes/FishMarketStallScene.unity
+    guid: e5a790461887a68428bd78d67e63077e
   m_configObjects: {}
