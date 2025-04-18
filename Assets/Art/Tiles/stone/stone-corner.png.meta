@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c1e6e3f821f6de04eae46dd965d2933f
+guid: e89e060a3965f6d4d953bc8402ec8950
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pavement-default_0
+      name: stone-corner_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e95ea986cd84d8041b6a4cc52bbdae44
-      internalID: -261129867
+      spriteID: bda27dad52d07fe4b86bb1847bbc400f
+      internalID: -1019251822
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_1
+      name: stone-corner_1
       rect:
         serializedVersion: 2
         x: 32
@@ -145,35 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: acf7a4cd2d15e134fad8ec3801b7df58
-      internalID: 701810531
+      spriteID: d8a93b5e26627b844be8a81ef7022f5f
+      internalID: 757655744
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 526ed4c99f6223d4fb6ebacc28dc9db2
-      internalID: -249193127
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pavement-default_3
+      name: stone-corner_2
       rect:
         serializedVersion: 2
         x: 0
@@ -187,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93cc683555c729c49ad462e5d75f5b61
-      internalID: -901843208
+      spriteID: 88f78bfad3fc6cb4489c2986c90e8b9f
+      internalID: 1310387149
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_4
+      name: stone-corner_3
       rect:
         serializedVersion: 2
         x: 32
@@ -208,92 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2da470dbcbcccf4e903a75cbcf03ce2
-      internalID: 406670025
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pavement-default_5
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 60aa435f6e57400438d5eb548166801c
-      internalID: -415901161
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pavement-default_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a316805da3bd36c4692358a32ab71a07
-      internalID: -431397884
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pavement-default_7
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c5e178ed4e05a0847bf56bd78b88bcde
-      internalID: 1170027691
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pavement-default_8
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2aaba8f0f887882438232e85fe9d3902
-      internalID: -1184271003
+      spriteID: e56d99faaa1db3a42bd65f93c060a805
+      internalID: -206251654
       vertices: []
       indices: 
       edges: []
@@ -301,7 +196,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 1da6452fe7aeea44c9226fd1278c919b
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -309,15 +204,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pavement-default_0: -261129867
-      pavement-default_1: 701810531
-      pavement-default_2: -249193127
-      pavement-default_3: -901843208
-      pavement-default_4: 406670025
-      pavement-default_5: -415901161
-      pavement-default_6: -431397884
-      pavement-default_7: 1170027691
-      pavement-default_8: -1184271003
+      stone-corner_0: -1019251822
+      stone-corner_1: 757655744
+      stone-corner_2: 1310387149
+      stone-corner_3: -206251654
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

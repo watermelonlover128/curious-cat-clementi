@@ -26,6 +26,4 @@ public abstract class PlayerCamera : MonoBehaviour
                                     this.FollowTargetPosition.y,
                                     this.transform.position.z);
     }
-    
-
 }

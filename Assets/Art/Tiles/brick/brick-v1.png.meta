@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c1e6e3f821f6de04eae46dd965d2933f
+guid: 8dc035790cf9726409754f98fb9eb1c6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pavement-default_0
+      name: brick-v1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e95ea986cd84d8041b6a4cc52bbdae44
-      internalID: -261129867
+      spriteID: 2c9d957317141174ebd75be6d829d41e
+      internalID: 310822480
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_1
+      name: brick-v1_1
       rect:
         serializedVersion: 2
         x: 32
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: acf7a4cd2d15e134fad8ec3801b7df58
-      internalID: 701810531
+      spriteID: ad7646040eda0674f96248c9f93e3ed0
+      internalID: 1651123406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_2
+      name: brick-v1_2
       rect:
         serializedVersion: 2
         x: 64
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 526ed4c99f6223d4fb6ebacc28dc9db2
-      internalID: -249193127
+      spriteID: f8166566af73eb445bd6da962df91aac
+      internalID: -1279626942
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_3
+      name: brick-v1_3
       rect:
         serializedVersion: 2
         x: 0
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93cc683555c729c49ad462e5d75f5b61
-      internalID: -901843208
+      spriteID: ba254f8e2036bfc439bda5f752250359
+      internalID: 85824439
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_4
+      name: brick-v1_4
       rect:
         serializedVersion: 2
         x: 32
@@ -208,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2da470dbcbcccf4e903a75cbcf03ce2
-      internalID: 406670025
+      spriteID: 748aab0136304fe49b8426bfa6896ebe
+      internalID: -1650222905
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_5
+      name: brick-v1_5
       rect:
         serializedVersion: 2
         x: 64
@@ -229,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60aa435f6e57400438d5eb548166801c
-      internalID: -415901161
+      spriteID: 6dedccce4df07164b8e46c6c524c2e99
+      internalID: 1728112848
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_6
+      name: brick-v1_6
       rect:
         serializedVersion: 2
         x: 0
@@ -250,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a316805da3bd36c4692358a32ab71a07
-      internalID: -431397884
+      spriteID: 31344c7cd0ab475439b571dab9a17f5e
+      internalID: -1428632778
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_7
+      name: brick-v1_7
       rect:
         serializedVersion: 2
         x: 32
@@ -271,14 +271,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5e178ed4e05a0847bf56bd78b88bcde
-      internalID: 1170027691
+      spriteID: e7d392bcd9b34d247944afa1d5d495df
+      internalID: -614500907
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pavement-default_8
+      name: brick-v1_8
       rect:
         serializedVersion: 2
         x: 64
@@ -292,8 +292,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2aaba8f0f887882438232e85fe9d3902
-      internalID: -1184271003
+      spriteID: 5b11d766d3c7046429c24cde60c43a42
+      internalID: -276948432
       vertices: []
       indices: 
       edges: []
@@ -301,7 +301,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 1da6452fe7aeea44c9226fd1278c919b
+    spriteID: 030394db9181baf409d6c4bba9dbe0d2
     internalID: 0
     vertices: []
     indices: 
@@ -309,15 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pavement-default_0: -261129867
-      pavement-default_1: 701810531
-      pavement-default_2: -249193127
-      pavement-default_3: -901843208
-      pavement-default_4: 406670025
-      pavement-default_5: -415901161
-      pavement-default_6: -431397884
-      pavement-default_7: 1170027691
-      pavement-default_8: -1184271003
+      brick-v1_0: 310822480
+      brick-v1_1: 1651123406
+      brick-v1_2: -1279626942
+      brick-v1_3: 85824439
+      brick-v1_4: -1650222905
+      brick-v1_5: 1728112848
+      brick-v1_6: -1428632778
+      brick-v1_7: -614500907
+      brick-v1_8: -276948432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
