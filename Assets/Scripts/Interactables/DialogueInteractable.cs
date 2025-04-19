@@ -23,16 +23,16 @@ public class DialogueInteractable : Interactable
         }
         this.IsInteractable = false;
         DialogueManager.Instance.PlayDialogueSequence(dialogueSequenceObj);
-        DialogueManager.Instance.OnEndDialogue += OnDialogueEnded;
+        DialogueManager.Instance.OnEndDialogue += Listen_OnDialogueEnded;
     }
 
-    private void OnDialogueEnded(string id) 
+    private void Listen_OnDialogueEnded(string id) 
     {
         if (this.dialogueSequenceObject.ID != id && !this.questDialogues.Values.Any(d => d.ID == id)) {
             Debug.LogWarningFormat("DialogueInteractable {0}: Waiting for initiated dialogue to end, but dialogue '{1}' ended instead. Only one dialogue should be playing at a time!", this.gameObject.name, id);
             return;
         } 
-        DialogueManager.Instance.OnEndDialogue -= OnDialogueEnded;
+        DialogueManager.Instance.OnEndDialogue -= Listen_OnDialogueEnded;
         this.IsInteractable = true;
     }
 

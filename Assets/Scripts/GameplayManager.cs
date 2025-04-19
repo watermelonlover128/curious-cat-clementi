@@ -13,17 +13,22 @@ public class GameplayManager : MonoBehaviourSingleton<GameplayManager>
 
     public GameObject Player { get; private set;}
 
+    public delegate void GameStart();
+    public event GameStart OnStartGameEvent;
+
 
     private Dictionary<SceneID, Vector3> spawnPoints = new Dictionary<SceneID, Vector3>();
     private SceneID currentSubScene;
+
+    
+
     void Start()
     {
         this.Player = GameObject.Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
         mainCamera.SetTarget(this.Player.transform);
         SceneManager.Instance.OnAdditiveSceneLoadedEvent += OnSubGameSceneLoaded;
         SceneManager.Instance.OnSceneStartUnloadEvent += BeforeSceneUnloaded;
-        SceneManager.Instance.LoadSceneAdditiveAsync(SceneID.GAME_MAIN, () => {});
-
+        SceneManager.Instance.LoadSceneAdditiveAsync(SceneID.GAME_MAIN, () => OnStartGameEvent?.Invoke());
     }
 
     protected override void OnDestroy()

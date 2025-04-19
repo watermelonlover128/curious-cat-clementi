@@ -16,7 +16,12 @@ public class ObjectivesManager : MonoBehaviourSingleton<ObjectivesManager>
 
     void Start()
     {
-        this.StartObjectiveSequence(testObjectiveSequence.objectives);   
+        GameplayManager.Instance.OnStartGameEvent += Listen_OnStartGame;  
+    }
+
+    void Oestroy()
+    {
+        GameplayManager.Instance.OnStartGameEvent -= Listen_OnStartGame;
     }
 
     public void StartObjectiveSequence(Objective[] objectives) {
@@ -41,5 +46,9 @@ public class ObjectivesManager : MonoBehaviourSingleton<ObjectivesManager>
         this.ongoingObjectives.Remove(objective);
         if (objective.Next != null)
             this.ListenObjective(objective.Next);
+    }
+
+    private void Listen_OnStartGame() {
+        this.StartObjectiveSequence(testObjectiveSequence.objectives);
     }
 }

@@ -32,17 +32,20 @@ class SceneManager : MonoBehaviourSingleton<SceneManager> {
 
     public void LoadScene(SceneID sceneId) {
         string sceneName = GetSceneName(sceneId);
+        LoadingScreenHandler.Instance.ToggleLoadingScreen(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     public void LoadSceneAdditive(SceneID sceneId) {
         string sceneName = GetSceneName(sceneId);
+        LoadingScreenHandler.Instance.ToggleLoadingScreen(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
 
     public void LoadSceneAsync(SceneID sceneId, Action callback = null)
     {
         string sceneName = GetSceneName(sceneId);
+        LoadingScreenHandler.Instance.ToggleLoadingScreen(true);
         StartCoroutine(WaitLoadSceneAsync(sceneName, callback));
     }
 
@@ -57,6 +60,7 @@ class SceneManager : MonoBehaviourSingleton<SceneManager> {
     public void LoadSceneAdditiveAsync(SceneID sceneId, Action callback = null)
     {
         string sceneName = GetSceneName(sceneId);
+        LoadingScreenHandler.Instance.ToggleLoadingScreen(true);
         StartCoroutine(WaitLoadSceneAdditiveAsync(sceneName, callback));
     }
 
@@ -90,6 +94,7 @@ class SceneManager : MonoBehaviourSingleton<SceneManager> {
             OnAdditiveSceneLoadedEvent?.Invoke(sceneId);
         else
             OnSceneLoadedEvent?.Invoke(sceneId);
+        LoadingScreenHandler.Instance.ToggleLoadingScreen(false);
     }
 
     private void OnSceneUnloaded(Scene scene)

@@ -15,8 +15,8 @@ public class ObjectivesUIHandler : MonoBehaviour
     void Start()
     {
         // Listen to ObjectiveManager callbacks
-        ObjectivesManager.Instance.OnNewObjectiveEvent += OnNewObjective;
-        ObjectivesManager.Instance.OnObjectiveCompletedEvent += OnObjectiveCompleted;
+        ObjectivesManager.Instance.OnNewObjectiveEvent += Listen_OnNewObjective;
+        ObjectivesManager.Instance.OnObjectiveCompletedEvent += Listen_OnObjectiveCompleted;
 
         // Clear UI Rect
         foreach (Transform child in objectivesUIRect)
@@ -27,12 +27,12 @@ public class ObjectivesUIHandler : MonoBehaviour
     {
         // Unsubscribe from ObjectiveManager's events
         if (ObjectivesManager.Instance != null) {
-            ObjectivesManager.Instance.OnNewObjectiveEvent -= OnNewObjective;
-            ObjectivesManager.Instance.OnObjectiveCompletedEvent -= OnObjectiveCompleted;
+            ObjectivesManager.Instance.OnNewObjectiveEvent -= Listen_OnNewObjective;
+            ObjectivesManager.Instance.OnObjectiveCompletedEvent -= Listen_OnObjectiveCompleted;
         }
     }
 
-    private void OnNewObjective(Objective objective) 
+    private void Listen_OnNewObjective(Objective objective) 
     {
         if (objectiveUIList.ContainsKey(objective))
         {
@@ -44,7 +44,7 @@ public class ObjectivesUIHandler : MonoBehaviour
         objectiveUIList[objective] = ui; 
     }
 
-    private void OnObjectiveCompleted(Objective objective) 
+    private void Listen_OnObjectiveCompleted(Objective objective) 
     {
         if (!objectiveUIList.ContainsKey(objective)) {
             Debug.LogWarning("ObjectivesUIHandler: Attempted to remove/complete an objective which was not previously added!");
