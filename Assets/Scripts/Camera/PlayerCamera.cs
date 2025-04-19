@@ -13,7 +13,7 @@ public abstract class PlayerCamera : MonoBehaviour
     private Transform followTarget = null;
     protected Vector3 FollowTargetPosition { get => this.followTarget.position; }
 
-    void Update()
+    void LateUpdate()
     {
         this.UpdateCamera();
     }
